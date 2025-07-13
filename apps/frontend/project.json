@@ -1,0 +1,51 @@
+{
+  "name": "frontend",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite",
+        "cwd": "apps/frontend"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite",
+        "cwd": "apps/frontend"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite build",
+        "cwd": "apps/frontend"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite preview",
+        "cwd": "apps/frontend"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx eslint .",
+        "cwd": "apps/frontend"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsc --noEmit -p tsconfig.app.json",
+        "cwd": "apps/frontend"
+      }
+    }
+  }
+}

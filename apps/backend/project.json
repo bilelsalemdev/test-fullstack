@@ -1,0 +1,55 @@
+{
+    "name": "backend",
+    "root": "apps/backend",
+    "sourceRoot": "apps/backend",
+    "projectType": "application",
+    "targets": {
+        "serve": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python manage.py runserver 8001",
+                "cwd": "apps/backend"
+            }
+        },
+        "migrate": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python manage.py migrate",
+                "cwd": "apps/backend"
+            }
+        },
+        "makemigrations": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python manage.py makemigrations",
+                "cwd": "apps/backend"
+            }
+        },
+        "shell": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python manage.py shell",
+                "cwd": "apps/backend"
+            }
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python manage.py test",
+                "cwd": "apps/backend"
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": ". venv/bin/activate && python -m flake8 .",
+                "cwd": "apps/backend"
+            }
+        }
+    },
+    "tags": [
+        "type:application",
+        "platform:python",
+        "framework:django"
+    ]
+}
