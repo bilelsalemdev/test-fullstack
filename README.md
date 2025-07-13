@@ -1,96 +1,274 @@
-# TestFullstack
+# 🎴 Kolct - Card Trading Dashboard
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modern full-stack dashboard application for managing card trading operations, built with Django REST Framework and React.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+![Dashboard Screenshot](https://via.placeholder.com/800x400?text=Dashboard+Preview)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## 🚀 Features
 
-## Run tasks
+### 🎯 **Dashboard Analytics**
+- **Real-time Statistics** - Order values, card counts, collection metrics, user analytics
+- **Interactive Charts** - Revenue and order tracking with Chart.js
+- **Order Management** - Complete order lifecycle with status tracking
+- **Responsive Design** - Beautiful purple gradient theme optimized for all devices
 
-To run tasks with Nx use:
+### 🔐 **Authentication & Security**
+- **JWT Authentication** - Secure access and refresh token system
+- **Role-based Permissions** - Admin and user access controls
+- **Protected Routes** - Frontend route guards with authentication checks
 
-```sh
-npx nx <target> <project-name>
+### 📊 **Data Management**
+- **Collections** - Organize cards into themed collections
+- **Cards** - Detailed card information with rarity and pricing
+- **Orders** - Complete order processing and tracking
+- **Users** - User account management and profiles
+
+### 🎨 **Modern UI/UX**
+- **Glassmorphism Design** - Beautiful backdrop blur effects
+- **Loading States** - Skeleton loaders for optimal UX
+- **Dark Theme** - Purple/blue gradient matching design specifications
+- **Responsive Layout** - Mobile-first design approach
+
+## 🛠️ Tech Stack
+
+### **Backend**
+- **Django 5.2** - Web framework
+- **Django REST Framework** - API development
+- **PostgreSQL** - Primary database
+- **JWT Authentication** - djangorestframework-simplejwt
+- **Redis** - Caching (configurable)
+- **Swagger/OpenAPI** - API documentation
+
+### **Frontend**
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Redux Toolkit** - State management
+- **React Router** - Navigation
+- **Chart.js** - Data visualization
+- **Tailwind CSS** - Styling
+- **Vite** - Build tool
+
+### **DevOps & Tools**
+- **Nx Workspace** - Monorepo management
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+- **Git** - Version control
+
+## 📋 Prerequisites
+
+- **Node.js** 18+ and npm
+- **Python** 3.12+
+- **PostgreSQL** 14+
+- **Git**
+
+## 🚀 Quick Start
+
+### 1. **Clone the Repository**
+```bash
+git clone <your-repo-url>
+cd test-fullstack
 ```
 
-For example:
+### 2. **Backend Setup**
+```bash
+# Navigate to backend directory
+cd apps/backend
 
-```sh
-npx nx build myproject
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure PostgreSQL database
+# Update apps/backend/backend_api/settings.py with your database credentials
+
+# Run migrations
+python manage.py migrate
+
+# Create superuser (optional)
+python manage.py createsuperuser
+
+# Start backend server
+python manage.py runserver 127.0.0.1:8001
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### 3. **Frontend Setup**
+```bash
+# Navigate to workspace root
+cd ../..
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Install dependencies
+npm install
 
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
+# Start frontend development server
+npx nx serve frontend
 ```
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+### 4. **Access the Application**
+- **Frontend**: http://localhost:4200
+- **Backend API**: http://127.0.0.1:8001
+- **API Documentation**: http://127.0.0.1:8001/api/docs/
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
+## 🔧 Configuration
 
-# Generate a library
-npx nx g @nx/react:lib some-lib
+### **Environment Variables**
+Create `.env` files for environment-specific configuration:
+
+**Backend** (`apps/backend/.env`):
+```env
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+REDIS_URL=redis://localhost:6379/0
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+**Frontend** (`.env.local`):
+```env
+VITE_API_BASE_URL=http://127.0.0.1:8001/api
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+### **Database Setup**
+```sql
+-- PostgreSQL setup
+CREATE DATABASE cards_db;
+CREATE USER cards_user WITH PASSWORD 'cards_password';
+GRANT ALL PRIVILEGES ON DATABASE cards_db TO cards_user;
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📚 API Documentation
 
-## Install Nx Console
+The API is fully documented with Swagger/OpenAPI:
+- **Swagger UI**: http://127.0.0.1:8001/api/docs/
+- **ReDoc**: http://127.0.0.1:8001/api/redoc/
+- **Schema**: http://127.0.0.1:8001/api/schema/
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+### **Key Endpoints**
+```
+Authentication:
+POST /api/auth/login/          # User login
+POST /api/auth/refresh/        # Token refresh
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Dashboard:
+GET  /api/dashboard/kpis/      # Dashboard statistics
 
-## Useful links
+Resources:
+GET  /api/users/               # Users list (admin only)
+GET  /api/collections/         # Collections
+GET  /api/cards/               # Cards
+GET  /api/orders/              # Orders
 
-Learn more:
+User Management:
+GET  /api/users/me/            # Current user profile
+PUT  /api/auth/profile/        # Update profile
+```
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🧪 Testing
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### **Backend Tests**
+```bash
+cd apps/backend
+python manage.py test
+```
+
+### **Frontend Tests**
+```bash
+npx nx test frontend
+```
+
+## 🏗️ Project Structure
+
+```
+test-fullstack/
+├── apps/
+│   ├── backend/                 # Django application
+│   │   ├── api/                 # Main API app
+│   │   │   ├── models.py        # Database models
+│   │   │   ├── views.py         # API views
+│   │   │   ├── serializers.py   # DRF serializers
+│   │   │   ├── permissions.py   # Custom permissions
+│   │   │   └── tests/           # Test files
+│   │   ├── backend_api/         # Django project settings
+│   │   ├── requirements.txt     # Python dependencies
+│   │   └── manage.py           # Django management
+│   │
+│   └── frontend/               # React application
+│       ├── src/
+│       │   ├── components/     # React components
+│       │   │   └── dashboard/  # Dashboard components
+│       │   ├── services/       # API services
+│       │   ├── store/          # Redux store
+│       │   ├── types/          # TypeScript types
+│       │   └── styles.css      # Global styles
+│       ├── public/             # Static assets
+│       └── vite.config.ts      # Vite configuration
+│
+├── package.json                # Root dependencies
+├── nx.json                     # Nx workspace config
+├── .gitignore                  # Git ignore rules
+└── README.md                   # This file
+```
+
+## 🎨 Design System
+
+### **Colors**
+- **Primary Background**: `#120036`
+- **Secondary Background**: `#0F0036`
+- **Accent Color**: `#F81DFB` (Pink)
+- **Text Primary**: `#FFFFFF`
+- **Text Secondary**: `#B794F6` (Purple-300)
+
+### **Typography**
+- **Headings**: Oxanium font family
+- **Body Text**: Poppins font family
+
+### **Components**
+- **Glass Cards**: Backdrop blur with gradient borders
+- **Interactive Charts**: Chart.js with custom purple theme
+- **Status Indicators**: Color-coded order statuses
+- **Loading States**: Skeleton loaders for better UX
+
+## 🚀 Deployment
+
+### **Backend Deployment**
+1. Set up PostgreSQL database
+2. Configure environment variables
+3. Run migrations: `python manage.py migrate`
+4. Collect static files: `python manage.py collectstatic`
+5. Start with Gunicorn: `gunicorn backend_api.wsgi:application`
+
+### **Frontend Deployment**
+1. Build the application: `npx nx build frontend`
+2. Serve static files from `dist/` directory
+3. Configure API URL for production
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [Issues](../../issues) page
+2. Create a new issue with detailed information
+3. Include error messages and steps to reproduce
+
+## 🙏 Acknowledgments
+
+- Design inspiration from modern dashboard interfaces
+- Built with modern web development best practices
+- Optimized for performance and user experience
+
+---
+
+**Made with ❤️ for the card trading community**
