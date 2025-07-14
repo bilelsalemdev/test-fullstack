@@ -44,7 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#120036] flex">
+    <div className="min-h-screen bg-[#120036] flex overflow-x-auto">
       {/* Sidebar */}
       <Sidebar
         isCollapsed={sidebarCollapsed}
@@ -167,7 +167,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         {/* Page Content */}
-        <div className="flex-1 p-6 overflow-auto">{children}</div>
+        <section className="flex-1 overflow-auto p-6">{children}</section>
       </div>
     </div>
   );

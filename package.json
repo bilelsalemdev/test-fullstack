@@ -42,6 +42,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/axios": "^0.9.36",
+    "antd": "^5.26.4",
     "autoprefixer": "^10.4.21",
     "axios": "^1.10.0",
     "chart.js": "^4.5.0",

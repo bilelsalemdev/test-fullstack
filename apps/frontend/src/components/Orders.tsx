@@ -119,31 +119,23 @@ const Orders: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Calculate pagination
+  // Pagination helpers
   const totalPages = Math.ceil(collections.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentCollections = collections.slice(startIndex, endIndex);
 
-  const getStatusColor = (status: string) => {
-    return 'text-white';
-  };
+  const getStatusColor = (status: string) => 'text-white';
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  const handlePageChange = (page: number) => setCurrentPage(page);
+  const handleNextPage = () =>
+    currentPage < totalPages && setCurrentPage((prev) => prev + 1);
 
   return (
     <Layout>
-      <div className="p-3 md:p-6 bg-[#1D0054] rounded-xl border border-[#41308D] m-5 max-w-full overflow-hidden">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+      <div className="p-3 md:p-6 bg-[#1D0054] rounded-xl border border-[#41308D] m-5 max-w-[1100px] overflow-x-hidden">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4 ">
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-white font-poppins">
               Total Created Collections
@@ -155,167 +147,143 @@ const Orders: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4 flex-wrap">
-            {/* Search Button */}
-            <button className="p-2 bg-[#6F4FF2] rounded-lg hover:bg-[#5A3FD9] transition-colors cursor-pointer">
+            {/* Search */}
+            <button className="p-2 bg-[#6F4FF2] rounded-lg hover:bg-[#5A3FD9] transition-colors">
               <img
                 src="/assets/orders-icons/search-icon.svg"
                 alt="search"
-                className="w-5 h-5 cursor-pointer"
+                className="w-5 h-5"
               />
             </button>
-
-            {/* Sort Button */}
-            <button className="p-2 bg-[#6F4FF2] rounded-lg hover:bg-[#5A3FD9] transition-colors cursor-pointer">
+            {/* Sort */}
+            <button className="p-2 bg-[#6F4FF2] rounded-lg hover:bg-[#5A3FD9] transition-colors">
               <img
                 src="/assets/orders-icons/sort-icon.svg"
                 alt="sort"
-                className="w-5 h-5 cursor-pointer"
+                className="w-5 h-5"
               />
             </button>
-
-            {/* All Filter */}
-            <button className="px-4 py-2 bg-transparent text-white rounded-lg border border-[#822BF1] hover:bg-[#822BF1] transition-colors font-poppins cursor-pointer">
+            {/* All filter */}
+            <button className="px-4 py-2 bg-transparent text-white rounded-lg border border-[#822BF1] hover:bg-[#822BF1] transition-colors font-poppins">
               All
             </button>
-
-            {/* Export Data Button */}
-            <button
-              className="px-6 py-2 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] transition-colors font-poppins font-medium cursor-pointer"
-              style={{ borderRadius: '29px' }}
-            >
+            {/* Export */}
+            <button className="px-6 py-2 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] transition-colors font-poppins font-medium rounded-full">
               Export Data
             </button>
           </div>
         </div>
 
-        {/* Modern Table */}
-        <div className="bg-[#1D0054] rounded-xl overflow-hidden max-w-full">
-          <div className="overflow-x-auto">
-            <div className="min-w-[1300px]">
-              {/* Header */}
-              <div
-                className="grid gap-2 px-6 py-4 border-b border-[#6C7AA0] bg-[#1D0054]"
-                style={{
-                  gridTemplateColumns:
-                    '60px 100px 1fr 120px 160px 180px 100px 120px 60px',
-                }}
-              >
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-2 border-gray-500 bg-transparent text-[#FF04B4] focus:ring-[#FF04B4] focus:ring-2 focus:ring-offset-0 checked:bg-[#FF04B4] checked:border-[#FF04B4] hover:border-[#FF04B4] transition-colors cursor-pointer"
-                    style={{
-                      accentColor: '#FF04B4',
-                    }}
-                  />
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Collection Id
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Collection name
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Issuer Name
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Expected release date
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider text-center whitespace-nowrap">
-                  Number Of Card Designs
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Category
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap">
-                  Status
-                </div>
-                <div className="text-xs font-medium text-gray-300 tracking-wider text-center"></div>
+        {/* Table card */}
+        <div className="bg-[#1D0054] rounded-xl">
+          {/* Scroll wrapper */}
+          <div className="overflow-x-auto max-h-[480px] overflow-y-auto">
+            {/* Header row */}
+            <div
+              className="grid gap-2 px-6 py-4 border-b border-[#6c7aa058] bg-[#1D0054] sticky top-0 z-10"
+              style={{
+                gridTemplateColumns:
+                  '60px 100px 120px 120px 160px 180px 100px 120px 60px',
+              }}
+            >
+              <div className="flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-2 border-gray-500 bg-transparent accent-[#FF04B4] cursor-pointer"
+                />
               </div>
+              {[
+                'Collection Id',
+                'Collection name',
+                'Issuer Name',
+                'Expected release date',
+                'Number Of Card Designs',
+                'Category',
+                'Status',
+                '',
+              ].map((label) => (
+                <div
+                  key={label}
+                  className="text-xs font-medium text-gray-300 tracking-wider whitespace-nowrap text-center"
+                >
+                  {label}
+                </div>
+              ))}
+            </div>
 
-              {/* Data Rows */}
-              <div className="space-y-2 p-4">
-                {currentCollections.map((collection, index) => (
-                  <div
-                    key={collection.id}
-                    className="grid gap-2 px-2 py-4 bg-[#6F4FF212] hover:bg-[#6F4FF230] transition-colors rounded-lg items-center"
-                    style={{
-                      gridTemplateColumns:
-                        '60px 100px 1fr 120px 160px 180px 100px 120px 60px',
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 rounded border-2 border-gray-500 bg-transparent text-[#FF04B4] focus:ring-[#FF04B4] focus:ring-2 focus:ring-offset-0 checked:bg-[#FF04B4] checked:border-[#FF04B4] hover:border-[#FF04B4] transition-colors cursor-pointer"
-                        style={{
-                          accentColor: '#FF04B4',
-                        }}
-                      />
-                    </div>
-                    <div className="text-xs text-white font-medium whitespace-nowrap">
-                      {collection.collectionId}
-                    </div>
-                    <div className="text-xs text-white whitespace-nowrap">
-                      {collection.collectionName}
-                    </div>
-                    <div className="text-xs text-gray-300 whitespace-nowrap">
-                      {collection.issuerName}
-                    </div>
-                    <div className="text-xs text-gray-300 whitespace-nowrap">
-                      {collection.expectedReleaseDate}
-                    </div>
-                    <div className="text-xs text-white text-center whitespace-nowrap">
-                      {collection.numberOfCardDesigns}
-                    </div>
-                    <div className="text-xs text-gray-300 whitespace-nowrap">
-                      {collection.category}
-                    </div>
-                    <div className="text-xs whitespace-nowrap">
-                      <span className={getStatusColor(collection.status)}>
-                        {collection.status}
-                      </span>
-                    </div>
-                    <div className="flex justify-center">
-                      <button className="text-purple-400 hover:text-purple-300 transition-colors cursor-pointer">
-                        <img
-                          src="/assets/orders-icons/eye-outline.svg"
-                          alt="view"
-                          className="w-5 h-5"
-                        />
-                      </button>
-                    </div>
+            {/* Data rows */}
+            <div className="space-y-2 p-4">
+              {currentCollections.map((collection) => (
+                <div
+                  key={collection.id}
+                  className="grid gap-2 px-2 py-4 bg-[#6F4FF212] hover:bg-[#6F4FF230] transition-colors rounded-lg items-center w-full"
+                  style={{
+                    gridTemplateColumns:
+                      '60px 100px 120px 120px 160px 180px 100px 120px 60px',
+                  }}
+                >
+                  <div className="flex items-center justify-center">
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 rounded border-2 border-gray-500 bg-transparent accent-[#FF04B4] cursor-pointer"
+                    />
                   </div>
-                ))}
-              </div>
+                  <div className="text-xs text-white font-medium text-center whitespace-nowrap">
+                    {collection.collectionId}
+                  </div>
+                  <div className="text-xs text-white text-center whitespace-nowrap">
+                    {collection.collectionName}
+                  </div>
+                  <div className="text-xs text-gray-300 text-center whitespace-nowrap">
+                    {collection.issuerName}
+                  </div>
+                  <div className="text-xs text-gray-300 text-center whitespace-nowrap">
+                    {collection.expectedReleaseDate}
+                  </div>
+                  <div className="text-xs text-white text-center whitespace-nowrap">
+                    {collection.numberOfCardDesigns}
+                  </div>
+                  <div className="text-xs text-gray-300 text-center whitespace-nowrap">
+                    {collection.category}
+                  </div>
+                  <div className="text-xs text-white text-center whitespace-nowrap">
+                    {collection.status}
+                  </div>
+                  <div className="flex justify-center">
+                    <button className="text-purple-400 hover:text-purple-300 transition-colors">
+                      <img
+                        src="/assets/orders-icons/eye-outline.svg"
+                        alt="view"
+                        className="w-5 h-5"
+                      />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="bg-transparent px-6 py-6 flex items-center justify-center border-t border-[#6C7AA0]">
+            <div className="px-6 py-6 flex items-center justify-center">
               <div className="flex items-center space-x-3">
-                {/* Page Numbers */}
-                {Array.from({ length: totalPages }, (_, index) => {
-                  const pageNumber = index + 1;
-                  const isActive = pageNumber === currentPage;
-
+                {Array.from({ length: totalPages }, (_, idx) => {
+                  const page = idx + 1;
+                  const active = page === currentPage;
                   return (
                     <button
-                      key={pageNumber}
-                      onClick={() => handlePageChange(pageNumber)}
-                      className={`w-10 h-10 rounded-full text-sm font-bold flex items-center justify-center shadow-lg border border-[#F81DFB] cursor-pointer transition-colors ${
-                        isActive
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-10 h-10 rounded-full text-sm font-bold flex items-center justify-center shadow-lg border border-[#F81DFB] transition-colors ${
+                        active
                           ? 'bg-[#F81DFB] text-white'
                           : 'bg-transparent text-[#F81DFB] hover:bg-[#F81DFB] hover:text-white'
                       }`}
                     >
-                      {pageNumber}
+                      {page}
                     </button>
                   );
                 })}
-
-                {/* Next Page Arrow */}
                 {currentPage < totalPages && (
                   <img
                     onClick={handleNextPage}
