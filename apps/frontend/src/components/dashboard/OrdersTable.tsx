@@ -100,19 +100,19 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onSeeAll}
-            className="px-4 py-2 bg-[#F81DFB] text-white text-sm font-medium rounded-lg hover:bg-[#F81DFB]/80 transition-colors font-poppins"
+            className="px-4 py-2 bg-[#FF04B4] text-white text-sm font-medium rounded-lg hover:bg-[#FF04B4]/80 transition-colors font-poppins"
           >
             See All
           </button>
           <button
             onClick={onFilter}
-            className="px-4 py-2 bg-purple-600/30 text-purple-300 hover:text-white hover:bg-purple-600/50 text-sm font-medium rounded-lg transition-colors font-poppins"
+            className="px-4 py-2 bg-[#7090B069] text-purple-300 hover:text-white hover:bg-[#7090B069]/80 text-sm font-medium rounded-lg transition-colors font-poppins"
           >
             Filter
           </button>
           <button
             onClick={onExport}
-            className="px-4 py-2 bg-purple-600/30 text-purple-300 hover:text-white hover:bg-purple-600/50 text-sm font-medium rounded-lg transition-colors font-poppins"
+            className="px-4 py-2 bg-[#1D005499] text-purple-300 hover:text-white hover:bg-[#1D005499]/80 text-sm font-medium rounded-lg transition-colors font-poppins"
           >
             Export
           </button>

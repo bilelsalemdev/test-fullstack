@@ -80,6 +80,7 @@ export interface StatCard {
   changeLabel?: string;
   icon?: string;
   trend?: 'up' | 'down' | 'neutral';
+  seeAllLink?: string;
 }
 
 export interface ChartData {

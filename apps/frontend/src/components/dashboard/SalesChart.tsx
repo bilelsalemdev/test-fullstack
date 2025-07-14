@@ -58,6 +58,12 @@ const SalesChart: React.FC<SalesChartProps> = ({
     revenueData.length > 0 ? revenueData : defaultRevenueData;
   const chartOrderData = orderData.length > 0 ? orderData : defaultOrderData;
 
+  // Calculate averages for popover
+  const revenueAverage =
+    chartRevenueData.reduce((a, b) => a + b, 0) / chartRevenueData.length;
+  const orderAverage =
+    chartOrderData.reduce((a, b) => a + b, 0) / chartOrderData.length;
+
   const chartData = useMemo(
     () => ({
       labels: chartLabels,
@@ -146,7 +152,7 @@ const SalesChart: React.FC<SalesChartProps> = ({
 
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-purple-600/20 to-purple-800/10 backdrop-blur-md border border-purple-400/20 rounded-2xl p-6">
+      <div className="backdrop-blur-md border border-purple-400/20 rounded-2xl p-6 bg-[#B77FFF57]">
         <div className="flex items-center justify-between mb-6">
           <div className="h-6 bg-purple-300/20 rounded w-48 animate-pulse"></div>
           <div className="flex bg-purple-600/20 rounded-lg p-1">
@@ -160,54 +166,70 @@ const SalesChart: React.FC<SalesChartProps> = ({
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-600/20 to-purple-800/10 backdrop-blur-md border border-purple-400/20 rounded-2xl p-6">
+    <div className="backdrop-blur-md border border-purple-400/20 rounded-2xl p-6 relative bg-[#B77FFF57]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white font-oxanium">
           Sales Overtime
         </h3>
 
-        {/* Toggle Buttons */}
-        <div className="flex bg-purple-600/20 rounded-lg p-1">
-          {(['Revenue', 'Order'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 font-poppins ${
-                activeTab === tab
-                  ? 'bg-[#F81DFB] text-white shadow-lg'
-                  : 'text-purple-300 hover:text-white hover:bg-purple-600/30'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* Toggle Buttons with Menu Icon */}
+        <div className="flex items-center gap-3">
+          {/* Toggle Buttons */}
+          <div className="flex bg-purple-600/20 rounded-lg p-1">
+            {(['Revenue', 'Order'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 font-poppins ${
+                  activeTab === tab
+                    ? 'bg-[#F81DFB] text-white shadow-lg'
+                    : 'text-purple-300 hover:text-white hover:bg-purple-600/30'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Menu Icon */}
+          <img
+            src="/assets/dashboard-icons/menu-icon.svg"
+            alt="menu"
+            className="w-9 h-10"
+          />
         </div>
       </div>
 
       {/* Chart Container */}
       <div className="h-80 relative">
         <Line data={chartData} options={chartOptions} />
-      </div>
 
-      {/* Chart Info */}
-      <div className="mt-4 flex items-center justify-between text-sm">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#F81DFB] rounded-full"></div>
-            <span className="text-purple-300 font-poppins">
-              {activeTab === 'Revenue' ? 'Revenue' : 'Orders'}
-            </span>
+        {/* Average Popover - Always Visible */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-4 border border-[#F81DFB] z-20 bg-[#FF04B475] backdrop-blur-3xl">
+          <div className="text-white font-poppins">
+            <div className="text-sm font-medium mb-2">Average</div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs">
+                <div className="w-2 h-2 bg-[#F81DFB] rounded-full"></div>
+                <span>Aug 2003</span>
+                <span className="text-white/80">
+                  {activeTab === 'Revenue'
+                    ? `$${(revenueAverage / 1000).toFixed(1)}k`
+                    : `${Math.round(orderAverage)}`}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-xs">
+                <div className="w-2 h-2 bg-[#F81DFB] rounded-full"></div>
+                <span>Aug 2003</span>
+                <span className="text-white/80">
+                  {activeTab === 'Revenue'
+                    ? `$${((revenueAverage * 1.1) / 1000).toFixed(1)}k`
+                    : `${Math.round(orderAverage * 1.2)}`}
+                </span>
+              </div>
+            </div>
           </div>
-          <span className="text-purple-400 font-poppins">Last 8 months</span>
-        </div>
-
-        <div className="text-purple-300 font-poppins">
-          {activeTab === 'Revenue' ? (
-            <span>Peak: $25k in Jan</span>
-          ) : (
-            <span>Peak: 150 orders in Jan</span>
-          )}
         </div>
       </div>
     </div>
