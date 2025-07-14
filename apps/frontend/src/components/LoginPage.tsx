@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { loginUser, clearError } from '../store/slices/authSlice';
+import { Input, Button, LoadingSpinner } from './ui';
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,14 +16,12 @@ const LoginPage: React.FC = () => {
     password: '',
   });
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
 
-  // Clear error when component unmounts
   useEffect(() => {
     return () => {
       dispatch(clearError());
@@ -54,63 +53,44 @@ const LoginPage: React.FC = () => {
         />
       </div>
 
-      {/* Main login container */}
       <div className="relative z-20 w-full max-w-2xl mx-4 px-10 mb-20">
         <div className="bg-[linear-gradient(160.61deg,_rgba(255,255,255,0.10)_0%,_rgba(255,255,255,0.05)_101.7%)] border-t-[2.5px] border-b-[2.5px] border-solid border-[#ffffff66] backdrop-blur-[35.83px] rounded-[41.67px] p-10">
-          {/* Title */}
           <h1 className="text-5xl font-semibold text-white text-center mb-12 font-oxanium">
             Log In
           </h1>
 
-          {/* Error message */}
           {error && (
             <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
               {error}
             </div>
           )}
 
-          {/* Login form */}
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Email field */}
-            <div className="space-y-3">
-              <label
-                htmlFor="email"
-                className="block text-white text-lg font-poppins"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full h-15 px-4 bg-white/9 border-0 rounded-[10px] text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400/50 font-poppins"
-                placeholder="Enter your email"
-              />
-            </div>
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              label="Email Address"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your email"
+              className="h-15 bg-white/9 border-0 rounded-[10px] placeholder-white/60 focus:ring-purple-400/50"
+              containerClassName="space-y-3"
+            />
 
-            {/* Password field */}
-            <div className="space-y-3">
-              <label
-                htmlFor="password"
-                className="block text-white text-lg font-poppins"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-                className="w-full h-15 px-4 bg-white/9 border-0 rounded-[10px] text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400/50 font-poppins"
-                placeholder="Enter your password"
-              />
-            </div>
-            {/* Footer links */}
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              label="Password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your password"
+              className="h-15 bg-white/9 border-0 rounded-[10px] placeholder-white/60 focus:ring-purple-400/50"
+              containerClassName="space-y-3"
+            />
             <div className="flex justify-between items-center mt-8 text-sm">
               <Link
                 to="/forgot-password"
@@ -126,7 +106,6 @@ const LoginPage: React.FC = () => {
               </Link>
             </div>
 
-            {/* Submit button */}
             <div className="flex justify-center items-center">
               <div className=" flex justify-center items-center max-w-3xs w-full">
                 <img

@@ -65,7 +65,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
         isCollapsed ? 'w-20' : 'w-64'
       }`}
     >
-      {/* Logo */}
       <div className="pt-10">
         <img
           src="/assets/logo.svg"
@@ -74,7 +73,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
         />
       </div>
 
-      {/* Main Navigation */}
       <nav className="p-4 space-y-2 mt-10">
         {navigationItems.map((item, index) => {
           const isActive = location.pathname === item.path;
@@ -117,7 +115,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
         })}
       </nav>
 
-      {/* Bottom Navigation (Settings & Logout) */}
       <div className="px-4 space-y-2  pt-4 mt-10">
         {bottomNavigationItems.map((item, index) => {
           const isActive = location.pathname === item.path;
@@ -158,7 +155,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
         })}
       </div>
 
-      {/* Toggle Button */}
       {onToggle && (
         <button
           onClick={onToggle}

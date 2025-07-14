@@ -26,7 +26,6 @@ const initialState: AuthState = {
   isAuthenticated: !!localStorage.getItem('access_token'),
 };
 
-// Async thunks
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
@@ -73,7 +72,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -90,14 +88,12 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.token = null;
       })
-      // Logout
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
         state.error = null;
       })
-      // Get current user
       .addCase(getCurrentUser.pending, (state) => {
         state.isLoading = true;
       })

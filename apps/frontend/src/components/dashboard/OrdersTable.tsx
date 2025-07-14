@@ -23,12 +23,10 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     action: 'complete' | 'cancel'
   ) => {
     setActionLoading(orderId);
-    // TODO: Implement order status update API endpoint
     console.log(
       `${action} order ${orderId} - API endpoint not implemented yet`
     );
 
-    // Simulate API call
     setTimeout(() => {
       setActionLoading(null);
       alert(
@@ -89,7 +87,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
 
   return (
     <div className="bg-gradient-to-br from-purple-600/20 to-purple-800/10 backdrop-blur-md border border-purple-400/20 rounded-2xl p-6">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white font-oxanium">
           Latest Orders
@@ -117,7 +114,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

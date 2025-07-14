@@ -31,16 +31,12 @@ class Command(BaseCommand):
 
         self.stdout.write('Starting database seeding...')
         
-        # Create sample users
         self.create_users()
         
-        # Create sample collections
         self.create_collections()
         
-        # Create sample cards
         self.create_cards()
         
-        # Create sample orders
         self.create_orders()
         
         self.stdout.write(
@@ -48,10 +44,9 @@ class Command(BaseCommand):
         )
 
     def create_users(self):
-        """Create sample users."""
+
         self.stdout.write('Creating sample users...')
         
-        # Create admin user if doesn't exist
         if not User.objects.filter(is_superuser=True).exists():
             User.objects.create_superuser(
                 username='admin',
@@ -62,7 +57,6 @@ class Command(BaseCommand):
             )
             self.stdout.write('  - Created admin user')
 
-        # Create sample regular users
         sample_users = [
             {'username': 'john_doe', 'email': 'john@example.com', 'first_name': 'John', 'last_name': 'Doe', 'phone_number': '+1234567890'},
             {'username': 'jane_smith', 'email': 'jane@example.com', 'first_name': 'Jane', 'last_name': 'Smith', 'phone_number': '+1234567891'},
@@ -83,14 +77,14 @@ class Command(BaseCommand):
                 self.stdout.write(f"  - Created user: {user_data['first_name']} {user_data['last_name']}")
 
     def create_collections(self):
-        """Create sample collections matching the Orders table data."""
+
         self.stdout.write('Creating sample collections...')
         
         admin_user = User.objects.filter(is_superuser=True).first()
         
         collections_data = [
             {
-                'name': 'Team Falcons #1',
+                'name': 'Team Falcons
                 'description': 'First collection featuring Team Falcons esports team',
                 'status': 'in_production',
                 'expected_release_date': date(2024, 2, 15),
@@ -175,7 +169,7 @@ class Command(BaseCommand):
             self.stdout.write(f"  - Created collection: {collection.name}")
 
     def create_cards(self):
-        """Create sample cards for each collection."""
+
         self.stdout.write('Creating sample cards...')
         
         collections = Collection.objects.all()
@@ -189,17 +183,16 @@ class Command(BaseCommand):
         categories = ['common', 'uncommon', 'rare', 'epic', 'legendary']
         rarities = ['normal', 'foil', 'holographic', 'special']
         
-        card_counts = [5, 3, 7, 8, 12, 1, 11, 7, 8, 3]  # Number of cards per collection
+        card_counts = [5, 3, 7, 8, 12, 1, 11, 7, 8, 3]
         
         for i, collection in enumerate(collections):
             num_cards = card_counts[i] if i < len(card_counts) else random.randint(3, 12)
             
             for j in range(num_cards):
-                card_name = f"{random.choice(card_names)} #{j+1}"
+                card_name = f"{random.choice(card_names)}
                 category = random.choice(categories)
                 rarity = random.choice(rarities)
                 
-                # Price based on category and rarity
                 base_price = {
                     'common': random.uniform(5, 15),
                     'uncommon': random.uniform(15, 35),
@@ -226,7 +219,7 @@ class Command(BaseCommand):
             self.stdout.write(f"  - Created {num_cards} cards for {collection.name}")
 
     def create_orders(self):
-        """Create sample orders to generate dashboard data."""
+
         self.stdout.write('Creating sample orders...')
         
         users = list(User.objects.filter(is_superuser=False))
@@ -236,12 +229,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING('No users or cards found. Skipping order creation.'))
             return
         
-        # Create orders over the last 90 days
         order_statuses = ['processing', 'completed', 'cancelled']
-        status_weights = [0.2, 0.7, 0.1]  # More completed orders
+        status_weights = [0.2, 0.7, 0.1]
         
-        for i in range(50):  # Create 50 orders
-            # Random date in the last 90 days
+        for i in range(50):
             days_ago = random.randint(0, 90)
             order_date = timezone.now() - timedelta(days=days_ago)
             
@@ -253,11 +244,10 @@ class Command(BaseCommand):
                 status=status_choice,
                 order_date=order_date,
                 completed_date=order_date + timedelta(days=random.randint(1, 7)) if status_choice == 'completed' else None,
-                notes=f"Sample order #{i+1}",
-                order_value=Decimal('0.00')  # Temporary value, will be updated after adding items
+                notes=f"Sample order
+                order_value=Decimal('0.00')
             )
             
-            # Add 1-5 items to each order
             num_items = random.randint(1, 5)
             total_value = 0
             
@@ -276,7 +266,6 @@ class Command(BaseCommand):
                 
                 total_value += quantity * unit_price
             
-            # Update order value
             order.order_value = total_value
             order.save()
             

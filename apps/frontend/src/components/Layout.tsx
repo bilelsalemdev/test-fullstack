@@ -15,13 +15,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Fetch user data if not available
     if (!user) {
       dispatch(getCurrentUser());
     }
   }, [dispatch, user]);
 
-  // Handle outside clicks to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -45,22 +43,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#120036] flex overflow-x-auto">
-      {/* Sidebar */}
       <Sidebar
         isCollapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      {/* Main Content */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${
           sidebarCollapsed ? 'ml-16' : 'ml-64'
         }`}
       >
-        {/* Top Bar */}
         <div className="bg-[#0F0036]/50 border-b border-purple-800/30 px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Left Side - Search */}
             <div className="relative ml-6">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
                 <img
@@ -76,9 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               />
             </div>
 
-            {/* Right Side - Notifications, Theme Toggle, User Profile */}
             <div className="flex items-center gap-4">
-              {/* Theme Toggle */}
               <button className="p-2 text-purple-300 hover:text-white transition-colors cursor-pointer">
                 <img
                   src="/assets/dashboard-icons/mode.svg"
@@ -87,7 +79,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 />
               </button>
 
-              {/* Notifications */}
               <button className="relative p-2 text-purple-300 hover:text-white transition-colors cursor-pointer">
                 <img
                   src="/assets/dashboard-icons/bell.svg"
@@ -97,7 +88,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#F81DFB] rounded-full"></span>
               </button>
 
-              {/* User Profile */}
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
@@ -116,7 +106,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                 </button>
 
-                {/* Dropdown Menu */}
                 {userDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-[#1D0054] border border-purple-400/30 rounded-lg shadow-lg z-50">
                     <div className="py-1">
@@ -166,7 +155,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </div>
 
-        {/* Page Content */}
         <section className="flex-1 overflow-auto p-6">{children}</section>
       </div>
     </div>

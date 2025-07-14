@@ -15,7 +15,7 @@ User = get_user_model()
 
 
 class UserSerializerTest(TestCase):
-    """Test cases for UserSerializer."""
+
 
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -29,7 +29,7 @@ class UserSerializerTest(TestCase):
         }
 
     def test_valid_user_creation(self):
-        """Test creating a user with valid data."""
+
         serializer = UserSerializer(data=self.valid_data)
         self.assertTrue(serializer.is_valid())
         
@@ -39,7 +39,7 @@ class UserSerializerTest(TestCase):
         self.assertTrue(user.check_password('testpass123'))
 
     def test_password_mismatch_validation(self):
-        """Test validation when passwords don't match."""
+
         data = self.valid_data.copy()
         data['password_confirm'] = 'different'
         
@@ -48,7 +48,7 @@ class UserSerializerTest(TestCase):
         self.assertIn('non_field_errors', serializer.errors)
 
     def test_password_not_in_output(self):
-        """Test that password is not included in serialized output."""
+
         user = User.objects.create_user(**{
             k: v for k, v in self.valid_data.items() 
             if k not in ['password', 'password_confirm']
@@ -59,7 +59,7 @@ class UserSerializerTest(TestCase):
         self.assertNotIn('password_confirm', serializer.data)
 
     def test_email_uniqueness_validation(self):
-        """Test that duplicate emails are rejected."""
+
         User.objects.create_user(**{
             k: v for k, v in self.valid_data.items() 
             if k not in ['password', 'password_confirm']
@@ -74,7 +74,7 @@ class UserSerializerTest(TestCase):
 
 
 class UserProfileSerializerTest(TestCase):
-    """Test cases for UserProfileSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -86,7 +86,7 @@ class UserProfileSerializerTest(TestCase):
         )
 
     def test_serialization(self):
-        """Test serializing user profile data."""
+
         serializer = UserProfileSerializer(self.user)
         data = serializer.data
         
@@ -95,7 +95,7 @@ class UserProfileSerializerTest(TestCase):
         self.assertNotIn('password', data)
 
     def test_partial_update(self):
-        """Test partial update of user profile."""
+
         data = {'first_name': 'Updated'}
         serializer = UserProfileSerializer(self.user, data=data, partial=True)
         
@@ -104,7 +104,7 @@ class UserProfileSerializerTest(TestCase):
         self.assertEqual(updated_user.first_name, 'Updated')
 
     def test_read_only_fields(self):
-        """Test that read-only fields cannot be updated."""
+
         data = {
             'id': 999,
             'username': 'hacker',
@@ -115,13 +115,12 @@ class UserProfileSerializerTest(TestCase):
         self.assertTrue(serializer.is_valid())
         updated_user = serializer.save()
         
-        # These should not have changed
         self.assertNotEqual(updated_user.id, 999)
         self.assertEqual(updated_user.username, 'testuser')
 
 
 class CollectionSerializerTest(TestCase):
-    """Test cases for CollectionSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -143,7 +142,7 @@ class CollectionSerializerTest(TestCase):
         }
 
     def test_valid_collection_creation(self):
-        """Test creating a collection with valid data."""
+
         serializer = CollectionSerializer(
             data=self.valid_data,
             context={'request': self.request}
@@ -155,7 +154,7 @@ class CollectionSerializerTest(TestCase):
         self.assertEqual(collection.created_by, self.user)
 
     def test_nested_user_serialization(self):
-        """Test that created_by user is properly nested."""
+
         collection = Collection.objects.create(
             name='Test Collection',
             created_by=self.user
@@ -168,7 +167,7 @@ class CollectionSerializerTest(TestCase):
         self.assertEqual(data['created_by']['email'], 'test@example.com')
 
     def test_computed_fields(self):
-        """Test computed fields like total_cards and is_released."""
+
         collection = Collection.objects.create(
             name='Test Collection',
             created_by=self.user,
@@ -184,7 +183,7 @@ class CollectionSerializerTest(TestCase):
 
 
 class CardSerializerTest(TestCase):
-    """Test cases for CardSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -209,7 +208,7 @@ class CardSerializerTest(TestCase):
         }
 
     def test_valid_card_creation(self):
-        """Test creating a card with valid data."""
+
         serializer = CardSerializer(data=self.valid_data)
         self.assertTrue(serializer.is_valid())
         
@@ -218,7 +217,7 @@ class CardSerializerTest(TestCase):
         self.assertEqual(card.collection, self.collection)
 
     def test_nested_collection_serialization(self):
-        """Test that collection is properly nested in output."""
+
         card = Card.objects.create(
             name='Test Card',
             collection=self.collection,
@@ -233,7 +232,7 @@ class CardSerializerTest(TestCase):
         self.assertNotIn('collection_id', data)
 
     def test_computed_fields(self):
-        """Test computed fields like current_price and is_in_stock."""
+
         card = Card.objects.create(
             name='Test Card',
             collection=self.collection,
@@ -250,7 +249,7 @@ class CardSerializerTest(TestCase):
 
 
 class OrderSerializerTest(TestCase):
-    """Test cases for OrderSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -265,7 +264,7 @@ class OrderSerializerTest(TestCase):
         self.request.user = self.user
 
     def test_order_serialization(self):
-        """Test serializing an order with nested relationships."""
+
         order = Order.objects.create(
             user=self.user,
             order_value=Decimal('100.00'),
@@ -281,7 +280,7 @@ class OrderSerializerTest(TestCase):
         self.assertTrue(data['is_completed'])
 
     def test_order_creation_sets_user(self):
-        """Test that order creation automatically sets the user."""
+
         data = {
             'order_value': '100.00',
             'notes': 'Test order'
@@ -298,7 +297,7 @@ class OrderSerializerTest(TestCase):
 
 
 class OrderCreateSerializerTest(TestCase):
-    """Test cases for OrderCreateSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -323,7 +322,7 @@ class OrderCreateSerializerTest(TestCase):
         self.request.user = self.user
 
     def test_order_creation_with_items(self):
-        """Test creating an order with order items."""
+
         data = {
             'order_value': '20.00',
             'notes': 'Test order',
@@ -352,7 +351,7 @@ class OrderCreateSerializerTest(TestCase):
 
 
 class OrderItemSerializerTest(TestCase):
-    """Test cases for OrderItemSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -374,7 +373,7 @@ class OrderItemSerializerTest(TestCase):
         )
 
     def test_valid_order_item_creation(self):
-        """Test creating an order item with valid data."""
+
         data = {
             'card_id': self.card.id,
             'quantity': 2,
@@ -385,7 +384,7 @@ class OrderItemSerializerTest(TestCase):
         self.assertTrue(serializer.is_valid())
 
     def test_out_of_stock_validation(self):
-        """Test validation for out of stock cards."""
+
         self.card.stock_quantity = 0
         self.card.save()
         
@@ -400,7 +399,7 @@ class OrderItemSerializerTest(TestCase):
         self.assertIn('card_id', serializer.errors)
 
     def test_inactive_card_validation(self):
-        """Test validation for inactive cards."""
+
         self.card.is_active = False
         self.card.save()
         
@@ -416,7 +415,7 @@ class OrderItemSerializerTest(TestCase):
 
 
 class LoginSerializerTest(TestCase):
-    """Test cases for LoginSerializer."""
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -428,7 +427,7 @@ class LoginSerializerTest(TestCase):
         )
 
     def test_valid_login(self):
-        """Test login with valid credentials."""
+
         data = {
             'email': 'test@example.com',
             'password': 'testpass123'
@@ -439,7 +438,7 @@ class LoginSerializerTest(TestCase):
         self.assertEqual(serializer.validated_data['user'], self.user)
 
     def test_invalid_email(self):
-        """Test login with invalid email."""
+
         data = {
             'email': 'wrong@example.com',
             'password': 'testpass123'
@@ -450,7 +449,7 @@ class LoginSerializerTest(TestCase):
         self.assertIn('non_field_errors', serializer.errors)
 
     def test_invalid_password(self):
-        """Test login with invalid password."""
+
         data = {
             'email': 'test@example.com',
             'password': 'wrongpassword'
@@ -461,7 +460,7 @@ class LoginSerializerTest(TestCase):
         self.assertIn('non_field_errors', serializer.errors)
 
     def test_inactive_user(self):
-        """Test login with inactive user."""
+
         self.user.is_active = False
         self.user.save()
         
@@ -475,7 +474,7 @@ class LoginSerializerTest(TestCase):
         self.assertIn('non_field_errors', serializer.errors)
 
     def test_missing_credentials(self):
-        """Test login with missing credentials."""
+
         data = {'email': 'test@example.com'}
         
         serializer = LoginSerializer(data=data)

@@ -6,17 +6,16 @@ import StatisticsCards from './dashboard/StatisticsCards';
 import SalesChart from './dashboard/SalesChart';
 import OrdersTable from './dashboard/OrdersTable';
 import { StatCard } from '../types/dashboard';
+import { Button } from './ui';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { kpis, isLoading, error } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
-    // Fetch dashboard data
     dispatch(fetchDashboardKPIs());
   }, [dispatch]);
 
-  // Transform KPI data into stat cards
   const statisticsCards: StatCard[] = [
     {
       title: 'AVG. Order Value',
@@ -57,10 +56,8 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-  // Generate demo chart data (could be replaced with real data from backend)
   const generateChartData = () => {
     const labels = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'];
-    // Generate realistic revenue progression
     const baseRevenue = kpis?.total_revenue
       ? parseFloat(kpis.total_revenue)
       : 25000;
@@ -68,7 +65,6 @@ const Dashboard: React.FC = () => {
       Math.floor(baseRevenue * (0.4 + index * 0.1) + Math.random() * 3000)
     );
 
-    // Generate order data based on revenue
     const orderData = revenueData.map((revenue) =>
       Math.floor(revenue / 150 + Math.random() * 20)
     );
@@ -84,26 +80,24 @@ const Dashboard: React.FC = () => {
 
   return (
     <Layout>
-      {/* Error Message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm flex items-center justify-between">
+        <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm flex items-center justify-between font-poppins">
           <span>{error}</span>
-          <button
+          <Button
             onClick={handleRefresh}
+            variant="ghost"
+            size="sm"
             className="text-red-300 hover:text-red-200 underline"
           >
             Retry
-          </button>
+          </Button>
         </div>
       )}
 
       <div className="p-5 bg-[#1D0054] rounded-2xl border border-[#41308D]">
-        {/* Statistics Cards */}
         <StatisticsCards cards={statisticsCards} isLoading={isLoading} />
 
-        {/* Charts and Tables */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Sales Chart */}
           <div className="xl:col-span-2">
             <SalesChart
               revenueData={revenueData}
@@ -113,7 +107,6 @@ const Dashboard: React.FC = () => {
             />
           </div>
 
-          {/* Recent Orders Table */}
           <div className="xl:col-span-1">
             <OrdersTable
               orders={kpis?.recent_orders || []}

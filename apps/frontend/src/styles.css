@@ -1,26 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
-/* Import Google Fonts for Oxanium and Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* Tailwind v4 custom properties and utilities */
 @theme {
   --font-oxanium: 'Oxanium', sans-serif;
   --font-poppins: 'Poppins', sans-serif;
   
-  /* Custom spacing values */
   --spacing-15: 3.75rem;
   --spacing-23: 5.75rem;
   --spacing-84: 21rem;
   --spacing-117: 29.25rem;
   --spacing-120: 30rem;
   
-  /* Custom blur values */
   --blur-458: 458px;
 }
 
-/* Custom font family utilities */
 .font-oxanium {
   font-family: var(--font-oxanium);
 }
@@ -29,7 +23,6 @@
   font-family: var(--font-poppins);
 }
 
-/* Custom spacing utilities */
 .h-15 { height: var(--spacing-15); }
 .w-23 { width: var(--spacing-23); }
 .w-84 { width: var(--spacing-84); }
@@ -38,5 +31,4 @@
 .w-120 { width: var(--spacing-120); }
 .h-120 { height: var(--spacing-120); }
 
-/* Custom blur utilities */
 .blur-458 { filter: blur(var(--blur-458)); }

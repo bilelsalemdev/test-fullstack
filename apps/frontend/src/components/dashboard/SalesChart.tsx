@@ -37,7 +37,6 @@ const SalesChart: React.FC<SalesChartProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'Revenue' | 'Order'>('Revenue');
 
-  // Default data for demonstration
   const defaultLabels = [
     'Jun',
     'Jul',
@@ -58,7 +57,6 @@ const SalesChart: React.FC<SalesChartProps> = ({
     revenueData.length > 0 ? revenueData : defaultRevenueData;
   const chartOrderData = orderData.length > 0 ? orderData : defaultOrderData;
 
-  // Calculate averages for popover
   const revenueAverage =
     chartRevenueData.reduce((a, b) => a + b, 0) / chartRevenueData.length;
   const orderAverage =
@@ -167,15 +165,12 @@ const SalesChart: React.FC<SalesChartProps> = ({
 
   return (
     <div className="backdrop-blur-md border border-purple-400/20 rounded-2xl p-6 relative bg-[#B77FFF57]">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white font-oxanium">
           Sales Overtime
         </h3>
 
-        {/* Toggle Buttons with Menu Icon */}
         <div className="flex items-center gap-3">
-          {/* Toggle Buttons */}
           <div className="flex bg-purple-600/20 rounded-lg p-1">
             {(['Revenue', 'Order'] as const).map((tab) => (
               <button
@@ -192,7 +187,6 @@ const SalesChart: React.FC<SalesChartProps> = ({
             ))}
           </div>
 
-          {/* Menu Icon */}
           <img
             src="/assets/dashboard-icons/menu-icon.svg"
             alt="menu"
@@ -201,11 +195,9 @@ const SalesChart: React.FC<SalesChartProps> = ({
         </div>
       </div>
 
-      {/* Chart Container */}
       <div className="h-80 relative">
         <Line data={chartData} options={chartOptions} />
 
-        {/* Average Popover - Always Visible */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-4 border border-[#F81DFB] z-20 bg-[#FF04B475] backdrop-blur-3xl">
           <div className="text-white font-poppins">
             <div className="text-sm font-medium mb-2">Average</div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { StatCard } from '../../types/dashboard';
+import { Button } from '../ui';
 
 interface StatisticsCardsProps {
   cards: StatCard[];
@@ -11,11 +12,9 @@ const StatisticsCards: React.FC<StatisticsCardsProps> = ({
   cards,
   isLoading,
 }) => {
-  // Function to determine card styling based on title
   const getCardStyling = (title: string) => {
     const titleLower = title.toLowerCase();
 
-    // Check for avg order value and total collections
     if (
       titleLower.includes('avg order value') ||
       titleLower.includes('total collections')
@@ -23,7 +22,6 @@ const StatisticsCards: React.FC<StatisticsCardsProps> = ({
       return 'bg-[#12003696] shadow-[-4px_10px_11.9px_-16px_#00000040] rounded-2xl';
     }
 
-    // Check for total cards and total users
     if (
       titleLower.includes('total created card') ||
       titleLower.includes('total users account')
@@ -31,7 +29,6 @@ const StatisticsCards: React.FC<StatisticsCardsProps> = ({
       return 'bg-[#6f4ff238] shadow-[-4px_10px_11.9px_-16px_#00000040] rounded-2xl';
     }
 
-    // Default styling
     return 'bg-[#12003696] shadow-[-4px_10px_11.9px_-16px_#00000040] rounded-2xl';
   };
 
@@ -68,21 +65,18 @@ const StatisticsCards: React.FC<StatisticsCardsProps> = ({
           )} p-6 hover:border-purple-300/30 transition-all duration-300 flex justify-between`}
         >
           <div>
-            {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-white/80 text-sm font-medium font-poppins">
                 {card.title}
               </h3>
             </div>
 
-            {/* Value */}
             <div className="mb-3">
               <h2 className="text-3xl font-bold text-white font-oxanium">
                 {card.value}
               </h2>
             </div>
 
-            {/* Change indicator */}
             {card.change !== undefined && (
               <div className="flex items-center gap-2">
                 <div
@@ -110,7 +104,6 @@ const StatisticsCards: React.FC<StatisticsCardsProps> = ({
               </div>
             )}
 
-            {/* New cards indicator */}
             {card.title.includes('Card') &&
               card.changeLabel?.includes('New') && (
                 <div className="mt-2">

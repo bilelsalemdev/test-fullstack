@@ -15,7 +15,6 @@ const initialState: DashboardState = {
   lastUpdated: null,
 };
 
-// Async thunks
 export const fetchDashboardKPIs = createAsyncThunk(
   'dashboard/fetchKPIs',
   async (_, { rejectWithValue }) => {
@@ -47,7 +46,6 @@ const dashboardSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch dashboard KPIs
       .addCase(fetchDashboardKPIs.pending, (state) => {
         state.isLoading = true;
         state.error = null;

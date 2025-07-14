@@ -5,7 +5,7 @@ from .models import User, Collection, Card, Order, OrderItem
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    """Custom admin for User model."""
+
     list_display = ('email', 'first_name', 'last_name', 'is_active', 'is_staff', 'date_joined')
     list_filter = ('is_active', 'is_staff', 'is_superuser', 'date_joined')
     search_fields = ('email', 'first_name', 'last_name', 'username')
@@ -28,7 +28,7 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    """Admin interface for Collection model."""
+
     list_display = ('name', 'status', 'expected_release_date', 'total_cards', 'created_by', 'created_at')
     list_filter = ('status', 'created_at', 'expected_release_date')
     search_fields = ('name', 'description')
@@ -43,7 +43,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class OrderItemInline(admin.TabularInline):
-    """Inline admin for OrderItem model."""
+
     model = OrderItem
     extra = 0
     readonly_fields = ('total_price',)
@@ -51,7 +51,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
-    """Admin interface for Card model."""
+
     list_display = ('name', 'collection', 'category', 'rarity', 'current_price', 'stock_quantity', 'is_active')
     list_filter = ('category', 'rarity', 'is_active', 'collection__status', 'created_at')
     search_fields = ('name', 'description', 'collection__name')
@@ -68,7 +68,7 @@ class CardAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    """Admin interface for Order model."""
+
     list_display = ('order_number', 'user', 'order_value', 'status', 'total_items', 'order_date')
     list_filter = ('status', 'order_date', 'completed_date')
     search_fields = ('order_number', 'user__email', 'user__first_name', 'user__last_name')

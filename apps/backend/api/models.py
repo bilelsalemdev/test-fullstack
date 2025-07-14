@@ -5,10 +5,7 @@ from decimal import Decimal
 
 
 class User(AbstractUser):
-    """
-    Custom User model extending Django's AbstractUser.
-    Represents a Salesman or administrator in the system.
-    """
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
@@ -34,9 +31,7 @@ class User(AbstractUser):
 
 
 class Collection(models.Model):
-    """
-    Represents a collection of cards.
-    """
+
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('in_production', 'In Production'),
@@ -63,19 +58,17 @@ class Collection(models.Model):
 
     @property
     def total_cards(self):
-        """Returns the total number of cards in this collection."""
+
         return self.cards.count()
 
     @property
     def is_released(self):
-        """Returns True if the collection has been issued."""
+
         return self.status == 'issued'
 
 
 class Card(models.Model):
-    """
-    Represents an individual card within a collection.
-    """
+
     CATEGORY_CHOICES = [
         ('common', 'Common'),
         ('uncommon', 'Uncommon'),
@@ -115,19 +108,17 @@ class Card(models.Model):
 
     @property
     def current_price(self):
-        """Returns the market price if available, otherwise the base price."""
+
         return self.market_price if self.market_price else self.base_price
 
     @property
     def is_in_stock(self):
-        """Returns True if the card is in stock."""
+
         return self.stock_quantity > 0
 
 
 class Order(models.Model):
-    """
-    Represents a sales order placed by a user.
-    """
+
     STATUS_CHOICES = [
         ('processing', 'Processing'),
         ('completed', 'Completed'),
@@ -155,26 +146,23 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order_number:
-            # Generate order number if not provided
             import uuid
             self.order_number = f"ORD-{uuid.uuid4().hex[:8].upper()}"
         super().save(*args, **kwargs)
 
     @property
     def total_items(self):
-        """Returns the total number of items in this order."""
+
         return self.items.count()
 
     @property
     def is_completed(self):
-        """Returns True if the order is completed."""
+
         return self.status == 'completed'
 
 
 class OrderItem(models.Model):
-    """
-    Represents individual items within an order.
-    """
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
@@ -192,6 +180,5 @@ class OrderItem(models.Model):
         return f"{self.card.name} x{self.quantity} in {self.order.order_number}"
 
     def save(self, *args, **kwargs):
-        # Calculate total price automatically
         self.total_price = self.quantity * self.unit_price
         super().save(*args, **kwargs)

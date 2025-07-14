@@ -5,7 +5,7 @@ from .models import User, Collection, Card, Order, OrderItem
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for User model."""
+
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password_confirm = serializers.CharField(write_only=True)
 
@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """Serializer for user profile (without password fields)."""
+
     full_name = serializers.ReadOnlyField()
 
     class Meta:
@@ -44,7 +44,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
-    """Serializer for Collection model."""
+
     created_by = UserProfileSerializer(read_only=True)
     total_cards = serializers.ReadOnlyField()
     is_released = serializers.ReadOnlyField()
@@ -62,7 +62,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 
 class CardSerializer(serializers.ModelSerializer):
-    """Serializer for Card model."""
+
     collection = CollectionSerializer(read_only=True)
     collection_id = serializers.IntegerField(write_only=True)
     current_price = serializers.ReadOnlyField()
@@ -77,7 +77,7 @@ class CardSerializer(serializers.ModelSerializer):
 
 
 class CardListSerializer(serializers.ModelSerializer):
-    """Simplified serializer for Card listing."""
+
     collection_name = serializers.CharField(source='collection.name', read_only=True)
     current_price = serializers.ReadOnlyField()
 
@@ -88,7 +88,7 @@ class CardListSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    """Serializer for OrderItem model."""
+
     card = CardListSerializer(read_only=True)
     card_id = serializers.IntegerField(write_only=True)
 
@@ -108,7 +108,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    """Serializer for Order model."""
+
     user = UserProfileSerializer(read_only=True)
     items = OrderItemSerializer(many=True, read_only=True)
     total_items = serializers.ReadOnlyField()
@@ -127,7 +127,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating orders with items."""
+
     items = OrderItemSerializer(many=True)
 
     class Meta:
@@ -154,7 +154,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    """Serializer for user login."""
+
     email = serializers.EmailField()
     password = serializers.CharField()
 
@@ -180,7 +180,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class DashboardKPISerializer(serializers.Serializer):
-    """Serializer for dashboard KPI data."""
+
     total_orders = serializers.IntegerField()
     total_revenue = serializers.DecimalField(max_digits=12, decimal_places=2)
     total_collections = serializers.IntegerField()

@@ -30,7 +30,7 @@ from .permissions import (
     destroy=extend_schema(description="Delete user account"),
 )
 class UserViewSet(viewsets.ModelViewSet):
-    """ViewSet for User model with custom permissions."""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticatedOrCreateOnly]
@@ -49,7 +49,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def me(self, request):
-        """Get current user profile."""
+
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data)
 
@@ -62,7 +62,7 @@ class UserViewSet(viewsets.ModelViewSet):
     destroy=extend_schema(description="Delete collection"),
 )
 class CollectionViewSet(viewsets.ModelViewSet):
-    """ViewSet for Collection model."""
+
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     permission_classes = [permissions.IsAuthenticated, IsCollectionOwnerOrReadOnly]
@@ -73,7 +73,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def cards(self, request, pk=None):
-        """Get all cards in this collection."""
+
         collection = self.get_object()
         cards = Card.objects.filter(collection=collection)
         serializer = CardListSerializer(cards, many=True)
@@ -88,7 +88,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
     destroy=extend_schema(description="Delete card"),
 )
 class CardViewSet(viewsets.ModelViewSet):
-    """ViewSet for Card model."""
+
     queryset = Card.objects.all()
     permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
     filterset_fields = ['category', 'rarity', 'collection', 'is_active']
@@ -103,7 +103,7 @@ class CardViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def low_stock(self, request):
-        """Get cards with low stock (less than 10)."""
+
         cards = Card.objects.filter(stock_quantity__lt=10, is_active=True)
         serializer = CardListSerializer(cards, many=True)
         return Response(serializer.data)
@@ -117,7 +117,7 @@ class CardViewSet(viewsets.ModelViewSet):
     destroy=extend_schema(description="Cancel order"),
 )
 class OrderViewSet(viewsets.ModelViewSet):
-    """ViewSet for Order model."""
+
     queryset = Order.objects.all()
     permission_classes = [permissions.IsAuthenticated, CanManageOrders]
     filterset_fields = ['status', 'order_date']
@@ -126,7 +126,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     ordering = ['-order_date']
 
     def get_queryset(self):
-        """Users can only see their own orders unless they're staff."""
+
         if self.request.user.is_staff:
             return Order.objects.all()
         return Order.objects.filter(user=self.request.user)
@@ -138,7 +138,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def complete(self, request, pk=None):
-        """Mark order as completed."""
+
         order = self.get_object()
         if order.status != 'processing':
             return Response(
@@ -155,7 +155,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):
-        """Cancel an order."""
+
         order = self.get_object()
         if order.status == 'completed':
             return Response(
@@ -171,9 +171,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class DashboardKPIsView(APIView):
-    """
-    API view for dashboard KPIs with caching.
-    """
+
     permission_classes = [permissions.IsAuthenticated]
 
     @extend_schema(
@@ -181,17 +179,15 @@ class DashboardKPIsView(APIView):
         responses={200: DashboardKPISerializer}
     )
     def get(self, request):
-        """Get dashboard KPIs with Redis caching."""
+
         cache_key = 'dashboard_kpis'
         cached_data = cache.get(cache_key)
         
         if cached_data:
             return Response(cached_data)
 
-        # Calculate KPIs
         thirty_days_ago = timezone.now() - timedelta(days=30)
         
-        # Order statistics
         total_orders = Order.objects.count()
         total_revenue = Order.objects.filter(
             status='completed'
@@ -201,23 +197,18 @@ class DashboardKPIsView(APIView):
         completed_orders = Order.objects.filter(status='completed').count()
         cancelled_orders = Order.objects.filter(status='cancelled').count()
         
-        # Collection statistics
         total_collections = Collection.objects.count()
         active_collections = Collection.objects.filter(
             status__in=['pending', 'in_production']
         ).count()
         issued_collections = Collection.objects.filter(status='issued').count()
         
-        # Card statistics
         total_cards = Card.objects.count()
         
-        # User statistics
         total_users = User.objects.filter(is_active=True).count()
         
-        # Recent orders (last 10)
         recent_orders = Order.objects.select_related('user').order_by('-order_date')[:10]
         
-        # Top selling cards (based on order items)
         top_selling_cards = Card.objects.annotate(
             total_sold=Sum('order_items__quantity')
         ).filter(
@@ -239,16 +230,13 @@ class DashboardKPIsView(APIView):
             'top_selling_cards': CardListSerializer(top_selling_cards, many=True).data,
         }
         
-        # Cache for 5 minutes
         cache.set(cache_key, kpi_data, 300)
         
         return Response(kpi_data)
 
 
 class UserRegistrationView(CreateAPIView):
-    """
-    API view for user registration.
-    """
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
@@ -262,7 +250,6 @@ class UserRegistrationView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
-        # Return user profile data
         profile_serializer = UserProfileSerializer(user)
         return Response(
             profile_serializer.data,
@@ -271,9 +258,7 @@ class UserRegistrationView(CreateAPIView):
 
 
 class UserProfileView(APIView):
-    """
-    API view for user profile management.
-    """
+
     permission_classes = [permissions.IsAuthenticated]
 
     @extend_schema(
@@ -281,7 +266,7 @@ class UserProfileView(APIView):
         responses={200: UserProfileSerializer}
     )
     def get(self, request):
-        """Get current user profile."""
+
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data)
 
@@ -291,7 +276,7 @@ class UserProfileView(APIView):
         responses={200: UserProfileSerializer}
     )
     def put(self, request):
-        """Update current user profile."""
+
         serializer = UserProfileSerializer(
             request.user,
             data=request.data,
