@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Order } from '../../types/dashboard';
-import { useAppDispatch } from '../../store/hooks';
-import { completeOrder, cancelOrder } from '../../store/slices/dashboardSlice';
 
 interface OrdersTableProps {
   orders: Order[];
@@ -18,7 +16,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   onFilter,
   onExport,
 }) => {
-  const dispatch = useAppDispatch();
   const [actionLoading, setActionLoading] = useState<number | null>(null);
 
   const handleOrderAction = async (
@@ -26,17 +23,18 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     action: 'complete' | 'cancel'
   ) => {
     setActionLoading(orderId);
-    try {
-      if (action === 'complete') {
-        await dispatch(completeOrder(orderId)).unwrap();
-      } else {
-        await dispatch(cancelOrder(orderId)).unwrap();
-      }
-    } catch (error) {
-      console.error('Failed to update order:', error);
-    } finally {
+    // TODO: Implement order status update API endpoint
+    console.log(
+      `${action} order ${orderId} - API endpoint not implemented yet`
+    );
+
+    // Simulate API call
+    setTimeout(() => {
       setActionLoading(null);
-    }
+      alert(
+        `Order ${action} functionality will be implemented with backend API`
+      );
+    }, 1000);
   };
 
   const getStatusColor = (status: string) => {

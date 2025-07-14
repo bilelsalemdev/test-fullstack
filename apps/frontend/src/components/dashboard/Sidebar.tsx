@@ -30,11 +30,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
       path: '/dashboard',
     },
     {
-      name: 'Orders',
-      icon: '/assets/sidebar-icons/apps.svg',
-      path: '/orders',
-    },
-    {
       name: 'Collections',
       icon: '/assets/sidebar-icons/shopping-bag.svg',
       path: '/collections',

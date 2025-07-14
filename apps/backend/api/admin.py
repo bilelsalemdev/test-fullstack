@@ -72,7 +72,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_number', 'user', 'order_value', 'status', 'total_items', 'order_date')
     list_filter = ('status', 'order_date', 'completed_date')
     search_fields = ('order_number', 'user__email', 'user__first_name', 'user__last_name')
-    readonly_fields = ('order_number', 'created_at', 'updated_at', 'total_items')
+    readonly_fields = ('order_number', 'order_date', 'created_at', 'updated_at', 'total_items')
     date_hierarchy = 'order_date'
     inlines = [OrderItemInline]
     

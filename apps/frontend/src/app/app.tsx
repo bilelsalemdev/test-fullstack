@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from '../components/LoginPage';
 import Dashboard from '../components/Dashboard';
-import Orders from '../components/Orders';
+import Collections from '../components/Collections';
 import { useAppSelector } from '../store/hooks';
 
 export function App() {
@@ -17,9 +17,9 @@ export function App() {
         }
       />
       <Route
-        path="/orders"
+        path="/collections"
         element={
-          isAuthenticated ? <Orders /> : <Navigate to="/login" replace />
+          isAuthenticated ? <Collections /> : <Navigate to="/login" replace />
         }
       />
       <Route

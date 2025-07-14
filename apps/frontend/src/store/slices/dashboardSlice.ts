@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { dashboardApi } from '../../services/dashboardApi';
-import { DashboardState, DashboardKPIs } from '../../types/dashboard';
+import { dashboardApi, DashboardKPIs } from '../../services/dashboardApi';
+
+export interface DashboardState {
+  kpis: DashboardKPIs | null;
+  isLoading: boolean;
+  error: string | null;
+  lastUpdated: string | null;
+}
 
 const initialState: DashboardState = {
   kpis: null,
@@ -14,7 +20,7 @@ export const fetchDashboardKPIs = createAsyncThunk(
   'dashboard/fetchKPIs',
   async (_, { rejectWithValue }) => {
     try {
-      const data = await dashboardApi.getKPIs();
+      const data = await dashboardApi.getDashboardKPIs();
       return data;
     } catch (error: any) {
       return rejectWithValue(
@@ -24,56 +30,7 @@ export const fetchDashboardKPIs = createAsyncThunk(
   }
 );
 
-export const updateOrderStatus = createAsyncThunk(
-  'dashboard/updateOrderStatus',
-  async (
-    { orderId, status }: { orderId: number; status: string },
-    { rejectWithValue, dispatch }
-  ) => {
-    try {
-      const response = await dashboardApi.updateOrderStatus(orderId, status);
-      // Refresh dashboard data after update
-      dispatch(fetchDashboardKPIs());
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.detail || 'Failed to update order status'
-      );
-    }
-  }
-);
 
-export const completeOrder = createAsyncThunk(
-  'dashboard/completeOrder',
-  async (orderId: number, { rejectWithValue, dispatch }) => {
-    try {
-      const response = await dashboardApi.completeOrder(orderId);
-      // Refresh dashboard data after completing order
-      dispatch(fetchDashboardKPIs());
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.detail || 'Failed to complete order'
-      );
-    }
-  }
-);
-
-export const cancelOrder = createAsyncThunk(
-  'dashboard/cancelOrder',
-  async (orderId: number, { rejectWithValue, dispatch }) => {
-    try {
-      const response = await dashboardApi.cancelOrder(orderId);
-      // Refresh dashboard data after cancelling order
-      dispatch(fetchDashboardKPIs());
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.detail || 'Failed to cancel order'
-      );
-    }
-  }
-);
 
 const dashboardSlice = createSlice({
   name: 'dashboard',
@@ -103,33 +60,6 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardKPIs.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
-      })
-      // Update order status
-      .addCase(updateOrderStatus.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(updateOrderStatus.fulfilled, (state) => {
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(updateOrderStatus.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
-      // Complete order
-      .addCase(completeOrder.fulfilled, (state) => {
-        state.error = null;
-      })
-      .addCase(completeOrder.rejected, (state, action) => {
-        state.error = action.payload as string;
-      })
-      // Cancel order
-      .addCase(cancelOrder.fulfilled, (state) => {
-        state.error = null;
-      })
-      .addCase(cancelOrder.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

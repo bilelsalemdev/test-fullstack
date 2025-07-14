@@ -21,7 +21,9 @@ const Dashboard: React.FC = () => {
     {
       title: 'AVG. Order Value',
       value: kpis
-        ? `$ ${(kpis.total_revenue / (kpis.total_orders || 1)).toFixed(2)}`
+        ? `$ ${(
+            parseFloat(kpis.total_revenue) / (kpis.total_orders || 1)
+          ).toFixed(2)}`
         : '$ 0.00',
       change: 3.48,
       changeLabel: 'From last month',
@@ -59,7 +61,9 @@ const Dashboard: React.FC = () => {
   const generateChartData = () => {
     const labels = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'];
     // Generate realistic revenue progression
-    const baseRevenue = kpis?.total_revenue || 25000;
+    const baseRevenue = kpis?.total_revenue
+      ? parseFloat(kpis.total_revenue)
+      : 25000;
     const revenueData = labels.map((_, index) =>
       Math.floor(baseRevenue * (0.4 + index * 0.1) + Math.random() * 3000)
     );
