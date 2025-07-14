@@ -1,8 +1,6 @@
-# 🎴 Kolct - Card Trading Dashboard
+# 🎴 Kolct
 
-A modern full-stack dashboard application for managing card trading operations, built with Django REST Framework and React.
-
-![Dashboard Screenshot](https://via.placeholder.com/800x400?text=Dashboard+Preview)
+A modern full-stack dashboard application built with Django REST Framework and React.
 
 ## 🚀 Features
 
